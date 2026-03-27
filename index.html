@@ -21,6 +21,18 @@
         </div>
     </header>
 
+    <!-- Custom amount overlay -->
+    <div id="custom-overlay" class="overlay hidden">
+        <div class="overlay-box">
+            <label for="custom-input">Betrag in Euro:</label>
+            <input id="custom-input" type="text" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*" placeholder="z.B. 4,59" autocomplete="off">
+            <div class="overlay-actions">
+                <button id="custom-cancel" class="action-btn reset-btn">Abbrechen</button>
+                <button id="custom-ok" class="action-btn custom-btn">Hinzufügen</button>
+            </div>
+        </div>
+    </div>
+
     <div id="layout">
         <main id="main">
             <section id="action-buttons">

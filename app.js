@@ -96,7 +96,10 @@
         var frag = document.createDocumentFragment();
         prices.forEach(function (cents) {
             var btn = document.createElement("button");
-            btn.className = "price-btn" + (specialPrices.has(cents) ? " special" : "");
+            var cls = "price-btn";
+            if (specialPrices.has(cents)) cls += " special";
+            if (cents % 100 === 49 || cents % 100 === 99) cls += " highlight";
+            btn.className = cls;
             btn.textContent = centsToStr(cents);
             btn.setAttribute("data-cents", cents);
             btn.setAttribute("aria-label", centsToStr(cents) + " hinzufügen");
@@ -116,18 +119,51 @@
         btn.classList.add("flash");
     });
 
-    btnCustom.addEventListener("click", function () {
-        var input = prompt("Betrag in Euro eingeben (z.B. 4,59):");
-        if (input === null || input.trim() === "") return;
-        // Accept both comma and dot as decimal separator
-        var cleaned = input.trim().replace(",", ".");
+    // --- Custom amount overlay ---
+    var overlay = document.getElementById("custom-overlay");
+    var customInput = document.getElementById("custom-input");
+    var customOk = document.getElementById("custom-ok");
+    var customCancel = document.getElementById("custom-cancel");
+
+    function openCustom() {
+        customInput.value = "";
+        overlay.classList.remove("hidden");
+        customInput.focus();
+    }
+
+    function closeCustom() {
+        overlay.classList.add("hidden");
+        customInput.blur();
+    }
+
+    function submitCustom() {
+        var raw = customInput.value.trim();
+        if (raw === "") return;
+        var cleaned = raw.replace(",", ".");
         var value = parseFloat(cleaned);
         if (isNaN(value) || value <= 0) {
-            alert("Bitte einen gültigen Betrag eingeben.");
+            customInput.style.borderColor = "var(--danger)";
             return;
         }
-        var cents = Math.round(value * 100);
-        addItem(cents);
+        addItem(Math.round(value * 100));
+        closeCustom();
+    }
+
+    btnCustom.addEventListener("click", openCustom);
+    customCancel.addEventListener("click", closeCustom);
+    customOk.addEventListener("click", submitCustom);
+
+    customInput.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") submitCustom();
+        if (e.key === "Escape") closeCustom();
+    });
+
+    customInput.addEventListener("input", function () {
+        customInput.style.borderColor = "";
+    });
+
+    overlay.addEventListener("click", function (e) {
+        if (e.target === overlay) closeCustom();
     });
 
     btnUndo.addEventListener("click", function () {
