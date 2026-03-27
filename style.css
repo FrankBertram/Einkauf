@@ -154,7 +154,7 @@ main {
 /* --- Action buttons --- */
 #action-buttons {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 0.5rem;
     margin-top: 0.75rem;
 }
@@ -191,6 +191,14 @@ main {
 
 .custom-btn:active {
     background: var(--custom-dark);
+}
+
+.repeat-btn {
+    background: #43a047;
+}
+
+.repeat-btn:active {
+    background: #2e7d32;
 }
 
 .reset-btn {
@@ -253,9 +261,6 @@ main {
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     padding: 0.6rem 0.75rem;
-    max-height: 50vh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
 }
 
 #item-list h2 {
@@ -270,6 +275,9 @@ main {
 #entries {
     list-style: none;
     padding: 0;
+    max-height: calc(5 * 2rem);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 #entries li {

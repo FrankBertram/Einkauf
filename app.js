@@ -11,6 +11,7 @@
     var grid = document.getElementById("price-buttons");
     var entriesList = document.getElementById("entries");
     var btnUndo = document.getElementById("btn-undo");
+    var btnRepeat = document.getElementById("btn-repeat");
     var btnReset = document.getElementById("btn-reset");
     var btnCustom = document.getElementById("btn-custom");
 
@@ -174,6 +175,11 @@
         items.pop();
         save();
         updateDisplay();
+    });
+
+    btnRepeat.addEventListener("click", function () {
+        if (items.length === 0) return;
+        addItem(items[items.length - 1]);
     });
 
     btnReset.addEventListener("click", function () {
