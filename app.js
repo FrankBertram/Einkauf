@@ -70,6 +70,7 @@
         if (!li) return;
         var index = parseInt(li.getAttribute("data-item-index"), 10);
         items.splice(index, 1);
+        recalcRepeat();
         save();
         updateDisplay();
     });
@@ -170,12 +171,48 @@
         if (e.target === overlay) closeCustom();
     });
 
+    function recalcRepeat() {
+        if (items.length === 0) {
+            repeatCount = 0;
+            lastAddedCents = null;
+        } else {
+            lastAddedCents = items[items.length - 1];
+            repeatCount = 0;
+            for (var i = items.length - 1; i >= 0; i--) {
+                if (items[i] === lastAddedCents) repeatCount++;
+                else break;
+            }
+        }
+        updateRepeatButton();
+    }
+
     btnUndo.addEventListener("click", function () {
         if (items.length === 0) return;
         items.pop();
+        recalcRepeat();
         save();
         updateDisplay();
     });
+
+    var repeatCount = 0;
+    var lastAddedCents = null;
+
+    function updateRepeatButton() {
+        btnRepeat.textContent = "↻ " + repeatCount + "×";
+    }
+
+    // Override addItem to track repeats
+    var _origAddItem = addItem;
+    addItem = function (cents) {
+        if (cents === lastAddedCents) {
+            repeatCount++;
+        } else {
+            lastAddedCents = cents;
+            repeatCount = 1;
+        }
+        _origAddItem(cents);
+        updateRepeatButton();
+    };
 
     btnRepeat.addEventListener("click", function () {
         if (items.length === 0) return;
@@ -186,6 +223,9 @@
         if (items.length === 0) return;
         if (!confirm("Warenkorb wirklich zurücksetzen?")) return;
         items = [];
+        repeatCount = 0;
+        lastAddedCents = null;
+        updateRepeatButton();
         save();
         updateDisplay();
     });
