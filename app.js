@@ -121,8 +121,8 @@
 
     // --- Custom amount overlay ---
     var overlay = document.getElementById("custom-overlay");
+    var customForm = document.getElementById("custom-form");
     var customInput = document.getElementById("custom-input");
-    var customOk = document.getElementById("custom-ok");
     var customCancel = document.getElementById("custom-cancel");
 
     function openCustom() {
@@ -151,10 +151,13 @@
 
     btnCustom.addEventListener("click", openCustom);
     customCancel.addEventListener("click", closeCustom);
-    customOk.addEventListener("click", submitCustom);
+
+    customForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        submitCustom();
+    });
 
     customInput.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") submitCustom();
         if (e.key === "Escape") closeCustom();
     });
 
