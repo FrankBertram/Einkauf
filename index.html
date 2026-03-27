@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a73e8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Einkaufshilfe</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header id="header">
+        <h1>🛒 Einkaufshilfe</h1>
+        <div id="total-display">
+            <span id="total">0,00 €</span>
+            <span id="item-count">(0 Artikel)</span>
+        </div>
+    </header>
+
+    <div id="layout">
+        <main id="main">
+            <section id="action-buttons">
+                <button id="btn-undo" class="action-btn undo-btn" aria-label="Letzten Eintrag löschen">↩ Zurück</button>
+                <button id="btn-custom" class="action-btn custom-btn" aria-label="Eigenen Betrag eingeben">✎ Betrag</button>
+                <button id="btn-reset" class="action-btn reset-btn" aria-label="Alles zurücksetzen">✕ Reset</button>
+            </section>
+
+            <section id="price-buttons" aria-label="Preise"></section>
+        </main>
+
+        <aside id="item-list">
+            <h2>Einträge</h2>
+            <ol id="entries" reversed></ol>
+        </aside>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
