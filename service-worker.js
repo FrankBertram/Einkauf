@@ -1,4 +1,4 @@
-var CACHE_NAME = "einkauf-v2";
+var CACHE_NAME = "einkauf-v3";
 var ASSETS = [
     "./",
     "./index.html",
@@ -7,7 +7,7 @@ var ASSETS = [
     "./manifest.json"
 ];
 
-// Install: cache all assets
+// Install: cache all assets for offline use
 self.addEventListener("install", function (event) {
     event.waitUntil(
         caches.open(CACHE_NAME).then(function (cache) {
@@ -33,11 +33,19 @@ self.addEventListener("activate", function (event) {
     self.clients.claim();
 });
 
-// Fetch: cache-first strategy
+// Fetch: network-first strategy — try network, fall back to cache (offline)
 self.addEventListener("fetch", function (event) {
     event.respondWith(
-        caches.match(event.request).then(function (cached) {
-            return cached || fetch(event.request);
+        fetch(event.request).then(function (response) {
+            // Update cache with fresh version
+            var clone = response.clone();
+            caches.open(CACHE_NAME).then(function (cache) {
+                cache.put(event.request, clone);
+            });
+            return response;
+        }).catch(function () {
+            // Offline: serve from cache
+            return caches.match(event.request);
         })
     );
 });
